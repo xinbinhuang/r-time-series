@@ -12,6 +12,43 @@
   <link rel="stylesheet" href="hello-time-series_files/reveal.js-3.3.0.1/css/reveal.css"/>
 
 
+<style type="text/css">
+div.sourceCode { overflow-x: auto; }
+table.sourceCode, tr.sourceCode, td.lineNumbers, td.sourceCode {
+  margin: 0; padding: 0; vertical-align: baseline; border: none; }
+table.sourceCode { width: 100%; line-height: 100%; }
+td.lineNumbers { text-align: right; padding-right: 4px; padding-left: 4px; color: #aaaaaa; border-right: 1px solid #aaaaaa; }
+td.sourceCode { padding-left: 5px; }
+code > span.kw { color: #007020; font-weight: bold; } /* Keyword */
+code > span.dt { color: #902000; } /* DataType */
+code > span.dv { color: #40a070; } /* DecVal */
+code > span.bn { color: #40a070; } /* BaseN */
+code > span.fl { color: #40a070; } /* Float */
+code > span.ch { color: #4070a0; } /* Char */
+code > span.st { color: #4070a0; } /* String */
+code > span.co { color: #60a0b0; font-style: italic; } /* Comment */
+code > span.ot { color: #007020; } /* Other */
+code > span.al { color: #ff0000; font-weight: bold; } /* Alert */
+code > span.fu { color: #06287e; } /* Function */
+code > span.er { color: #ff0000; font-weight: bold; } /* Error */
+code > span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
+code > span.cn { color: #880000; } /* Constant */
+code > span.sc { color: #4070a0; } /* SpecialChar */
+code > span.vs { color: #4070a0; } /* VerbatimString */
+code > span.ss { color: #bb6688; } /* SpecialString */
+code > span.im { } /* Import */
+code > span.va { color: #19177c; } /* Variable */
+code > span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
+code > span.op { color: #666666; } /* Operator */
+code > span.bu { } /* BuiltIn */
+code > span.ex { } /* Extension */
+code > span.pp { color: #bc7a00; } /* Preprocessor */
+code > span.at { color: #7d9029; } /* Attribute */
+code > span.do { color: #ba2121; font-style: italic; } /* Documentation */
+code > span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
+code > span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
+code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
+</style>
 
 <link rel="stylesheet" href="hello-time-series_files/reveal.js-3.3.0.1/css/theme/beige.css" id="theme">
 
@@ -61,6 +98,7 @@
 
     <style type="text/css">code{white-space: pre;}</style>
 
+    <link rel="stylesheet" href="style.css"/>
 
 <!-- Printing and PDF exports -->
 <script id="paper-css" type="application/dynamic-css">
@@ -444,6 +482,16 @@ style.innerHTML = style_script;
 document.getElementsByTagName('head')[0].appendChild(style);
 </script>
 
+    <script src="hello-time-series_files/htmlwidgets-1.2/htmlwidgets.js"></script>
+    <script src="hello-time-series_files/jquery-1.11.1/jquery.min.js"></script>
+    <link href="hello-time-series_files/dygraphs-1.1.1/dygraph.css" rel="stylesheet" />
+    <script src="hello-time-series_files/dygraphs-1.1.1/dygraph-combined.js"></script>
+    <script src="hello-time-series_files/dygraphs-1.1.1/shapes.js"></script>
+    <script src="hello-time-series_files/moment-2.8.4/moment.js"></script>
+    <script src="hello-time-series_files/moment-timezone-0.2.5/moment-timezone-with-data.js"></script>
+    <script src="hello-time-series_files/moment-fquarter-1.0.0/moment-fquarter.min.js"></script>
+    <script src="hello-time-series_files/dygraphs-binding-1.1.1.6/dygraphs.js"></script>
+    <script src="hello-time-series_files/Dygraph.Plugins.Unzoom-1.0/unzoom.js"></script>
 </head>
 <body>
   <div class="reveal">
@@ -477,6 +525,7 @@ document.getElementsByTagName('head')[0].appendChild(style);
 <h2>Acknowledgements</h2>
 <ul>
 <li>This workshop is adapted from <a href="https://otexts.com/fpp2/">Forecasting: Principles and Practice</a>. An accompanjed book for the amazing <code>forecast</code> package by <em>Rob J Hyndman</em>.</li>
+<li><a href="https://github.com/facebook/prophet">Prophet</a>: A robust forecasting framework by Facebook.</li>
 </ul>
 </section>
 <section id="why-r-not-python-sorry" class="slide level2">
@@ -497,41 +546,269 @@ document.getElementsByTagName('head')[0].appendChild(style);
 </section>
 <section id="why-should-i-care" class="slide level2">
 <h2>Why should I care?</h2>
-<p>some applications go here?</p>
+<ul>
+<li>Economic forecasting</li>
+<li>Target setting</li>
+<li>Budget/inventory management</li>
+<li>Sensors</li>
+<li>Monitoring/Log data</li>
+<li>…</li>
+</ul>
 </section>
 <section id="how-do-we-do-time-series-analysis" class="slide level2">
 <h2>How do we do Time Series Analysis?</h2>
+<ul>
+<li>Exploratory Data Analysis (EDA) to check if the data is staionary</li>
+<li>Transform the data if needed
+<ul>
+<li>Box-Cox Transformation</li>
+</ul></li>
+<li>Model Selection &amp; Validation</li>
+<li>Forecasting</li>
+</ul>
+</section>
+<section id="jargons" class="slide level2">
+<h2>“Jargons”</h2>
+<ul>
+<li><strong>Trend</strong>: a long-term increase or decrease in the data.</li>
+<li><strong>Seasonality</strong>: a periodic pattern over a fixed period</li>
+<li><strong>Cyclic</strong>: rises and falls that are not of a fixed frequency.</li>
+<li><strong>Stationary</strong>: properties do not vary across time</li>
+</ul>
+<aside class="notes">
+<p>
+Cyclic does not have fixed frequency but Seasonality does
+</p>
+<p>
+Stationary: Constant mean and variance
+</p>
+</aside>
+</section>
+<section id="stionary-or-not" class="slide level2">
+<h2>Stionary or NOT</h2>
+<h4 id="non-staionary">Non-staionary</h4>
+<p><img src="img/non-stationary.png" height="80%"" width="70%" alt="https://www.analyticsvidhya.com/blog/2018/09/non-stationary-time-series-python/"></p>
+<aside class="notes">
+Trend, Seasonality, Varying covariance/correlation
+</aside>
+<h4 id="stationary">Stationary</h4>
+<p><img src="img/stationary.png" height="50%"" width="30%" alt="https://www.analyticsvidhya.com/blog/2018/09/non-stationary-time-series-python/"></p>
 </section>
 <section id="the-dataset" class="slide level2">
 <h2>The Dataset</h2>
+<ul>
+<li>Time series version of the <em>Titanic Dataset</em></li>
+<li>Airline Passanger
+<ul>
+<li>Monthly totals of international airline passengers, 1949 to 1960.</li>
+</ul></li>
+</ul>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">head</span>(AirPassengers, <span class="dv">12</span>)</code></pre></div>
+<pre><code>##      Jan Feb Mar Apr May Jun Jul Aug Sep Oct Nov Dec
+## 1949 112 118 132 129 121 135 148 148 136 119 104 118</code></pre>
 </section>
 <section id="eda-processing" class="slide level2">
 <h2>EDA &amp; Processing</h2>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">AirPassengers <span class="op">%&gt;%</span><span class="st"> </span><span class="kw">tsdisplay</span>()</code></pre></div>
+<p><img src="hello-time-series_files/figure-revealjs/unnamed-chunk-3-1.png" width="768" /></p>
 <aside class="notes">
-EDA : Exploratory Data Analysis
+<p>
+ACF: autocorrelation function. Does what happen yesterdaty have a impact on today?
+</p>
+<p>
+PACF: partial autocorrelation function. Does what happend last week have a direct impact on today? Excluding the impacts between today and last week.
+</p>
+<p>
+Need to tranform it to make it stionary
+</p>
+</aside>
+</section>
+<section id="decomposition" class="slide level2">
+<h2>Decomposition</h2>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">AirPassengers <span class="op">%&gt;%</span><span class="st"> </span>
+<span class="st">    </span><span class="kw">stl</span>(<span class="dt">s.window =</span> <span class="st">&#39;periodic&#39;</span>) <span class="op">%&gt;%</span><span class="st"> </span>
+<span class="st">    </span><span class="kw">autoplot</span>()</code></pre></div>
+<p><img src="hello-time-series_files/figure-revealjs/unnamed-chunk-4-1.png" width="768" /></p>
+<aside class="notes">
+Decompose the series to look at the patterns of the data
 </aside>
 </section>
 <section id="model-fitting" class="slide level2">
 <h2>Model Fitting</h2>
+<ul>
+<li>Time-series train-test split</li>
+<li><em>Time-series cross-validation</em></li>
+</ul>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co"># keep the last year as test set</span>
+train &lt;-<span class="st"> </span><span class="kw">window</span>(AirPassengers, <span class="dt">end=</span><span class="dv">1959</span><span class="op">+</span><span class="dv">11</span><span class="op">/</span><span class="dv">12</span>)
+test &lt;-<span class="st"> </span><span class="kw">window</span>(AirPassengers, <span class="dt">start=</span><span class="dv">1960</span>)</code></pre></div>
+<aside class="notes">
+Here we don’t use cross-validation. But cross-validation is especially good for small data set.
+</aside>
 </section>
 <section id="models" class="slide level2">
 <h2>Models</h2>
+<ul>
+<li>Linear regression</li>
+<li>ARIMA</li>
+<li>Exponential smoothing</li>
+</ul>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co"># try different hyperparameters!</span>
+
+<span class="co"># linear regression</span>
+mod1 &lt;-<span class="st"> </span><span class="kw">tslm</span>(train <span class="op">~</span><span class="st"> </span>trend <span class="op">+</span><span class="st"> </span>season) 
+<span class="co"># ARIMA</span>
+mod2 &lt;-<span class="st"> </span><span class="kw">auto.arima</span>(train) 
+<span class="co"># exponential smoothing</span>
+mod3 &lt;-<span class="st"> </span><span class="kw">hw</span>(train, <span class="dt">seasonal =</span> <span class="st">&#39;multiplicative&#39;</span>) </code></pre></div>
+<aside class="notes">
+You may want to tune some hyperparameters to better fit the data.
+</aside>
 </section>
 <section id="model-validation" class="slide level2">
 <h2>Model Validation</h2>
 <ul>
-<li>Time-series train-test split</li>
-<li>Time-series cross-validation</li>
+<li>Make predictions on the test set</li>
+<li>Validate model performance with the test set</li>
+<li><em>Don’t use training set to validate your model performance</em>
+<ul>
+<li><strong>OVERFITTING</strong></li>
+</ul></li>
 </ul>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">h &lt;-<span class="st"> </span><span class="kw">length</span>(test)
+
+<span class="co"># benchmark prediction: use value in the previous period</span>
+benchmark &lt;-<span class="st"> </span><span class="kw">naive</span>(train, <span class="dt">h=</span>h) 
+
+mods &lt;-<span class="st"> </span><span class="kw">list</span>(
+    <span class="dt">lm =</span> mod1,
+    <span class="dt">arima =</span> mod2,
+    <span class="dt">exp_smooth =</span> mod3
+)
+<span class="co"># make predictions on test set</span>
+preds &lt;-<span class="st"> </span><span class="kw">map</span>(mods, <span class="op">~</span><span class="st"> </span><span class="kw">forecast</span>(.x, <span class="dt">h=</span>h))</code></pre></div>
+<aside class="notes">
+<p>
+In time series, it is important to have benchmark methods, cuz sometimes those naive methods would outperform complex models.
+</p>
+<p>
+Overfitting: memorize the training set without actually learning the underlying pattern.
+</p>
+</aside>
+</section>
+<section id="validation" class="slide level2">
+<h2>Validation</h2>
+<ul>
+<li>Use score metric to compare models</li>
+</ul>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co"># RMSE score for comparison</span>
+<span class="kw">accuracy</span>(benchmark, test)[, <span class="st">&#39;RMSE&#39;</span>]</code></pre></div>
+<pre><code>## Training set     Test set 
+##     31.33213    102.97653</code></pre>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">map</span>(preds, <span class="op">~</span><span class="st"> </span><span class="kw">accuracy</span>(.x ,test, <span class="dt">h=</span>h)[, <span class="st">&#39;RMSE&#39;</span>])</code></pre></div>
+<pre><code>## $lm
+## Training set     Test set 
+##     22.35917     49.47908 
+## 
+## $arima
+## Training set     Test set 
+##     9.907267    23.931703 
+## 
+## $exp_smooth
+## Training set     Test set 
+##     9.949946    16.583116</code></pre>
+<aside class="notes">
+There are different metrics for comparisons.
+</aside>
+</section>
+<section id="how-do-they-look-on-a-plot" class="slide level2">
+<h2>How do they look on a plot?</h2>
+<p><img src="hello-time-series_files/figure-revealjs/unnamed-chunk-9-1.png" width="768" /></p>
 </section>
 <section id="forecasting" class="slide level2">
 <h2>Forecasting!!!</h2>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co"># train on the whole data set</span>
+final_mod &lt;-<span class="st"> </span><span class="kw">hw</span>(AirPassengers, <span class="dt">seasonal =</span> <span class="st">&#39;multiplicative&#39;</span>)
+
+<span class="co"># let&#39;s have a 3 year future forecast</span>
+h &lt;-<span class="st"> </span><span class="dv">12</span> <span class="op">*</span><span class="st"> </span><span class="dv">3</span>
+
+fc &lt;-<span class="st"> </span><span class="kw">forecast</span>(final_mod, h)</code></pre></div>
 <aside class="notes">
-Also called extrapolation.
+Remember to have your final model to train on the whole data set.
 </aside>
 </section>
-<section id="section" class="slide level2">
-<h2></h2>
+<section id="forecast-plot" class="slide level2">
+<h2>Forecast plot</h2>
+<p><img src="hello-time-series_files/figure-revealjs/unnamed-chunk-11-1.png" width="768" /></p>
+</section>
+<section id="prophet" class="slide level2">
+<h2>Prophet</h2>
+<ul>
+<li>A robust forecasting framework by Facebook Data Science team</li>
+<li>Best with strong seasonal effects and several seasons of historical data.</li>
+<li>Robust to missing data, outliers, and shift in trend</li>
+</ul>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">format_ts &lt;-<span class="st"> </span><span class="cf">function</span>(ts) {
+    ds &lt;-<span class="st"> </span><span class="kw">as.Date</span>(zoo<span class="op">::</span><span class="kw">as.yearmon</span>(<span class="kw">time</span>(ts)))
+    y &lt;-<span class="st"> </span><span class="kw">as.matrix</span>(ts)
+    <span class="kw">return</span>(<span class="kw">data.frame</span>(<span class="dt">ds =</span> ds, <span class="dt">y =</span> y))
+}
+
+air_passengers &lt;-<span class="st"> </span><span class="kw">format_ts</span>(train) <span class="co"># format the input as required by Prophet</span>
+
+<span class="co"># fitting </span>
+mod4 &lt;-<span class="st"> </span><span class="kw">prophet</span>(air_passengers, <span class="dt">seasonality.mode =</span> <span class="st">&quot;multiplicative&quot;</span>)</code></pre></div>
+<pre><code>## Initial log joint probability = -2.41026
+## Optimization terminated normally: 
+##   Convergence detected: relative gradient magnitude is below tolerance</code></pre>
+<aside class="notes">
+based on an additive model where non-linear trends are fit with yearly, weekly, and daily seasonality, plus holiday effects.
+</aside>
+</section>
+<section id="prophet---validation" class="slide level2">
+<h2>Prophet - Validation</h2>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">future &lt;-<span class="st"> </span><span class="kw">make_future_dataframe</span>(mod4, 
+                                <span class="dt">periods =</span> <span class="dv">12</span>, 
+                                <span class="dt">freq =</span> <span class="st">&#39;month&#39;</span>)
+forecast &lt;-<span class="st"> </span><span class="kw">predict</span>(mod4, future)
+
+yhat &lt;-<span class="st"> </span>forecast<span class="op">$</span>yhat[<span class="dv">133</span><span class="op">:</span><span class="dv">144</span>] <span class="co"># subtract test set period</span>
+rmse &lt;-<span class="st"> </span><span class="kw">sqrt</span>(<span class="kw">mean</span>(yhat <span class="op">-</span><span class="st"> </span>test)<span class="op">^</span><span class="dv">2</span> ) <span class="co"># calculate RMSE score</span>
+<span class="kw">paste</span>(<span class="st">&#39;RMSE: &#39;</span>, rmse)</code></pre></div>
+<pre><code>## [1] &quot;RMSE:  15.387713599209&quot;</code></pre>
+<aside class="notes">
+RMSE even lower than previous models
+</aside>
+</section>
+<section id="train-on-the-whole-set-and-forecast" class="slide level2">
+<h2>Train on the whole set and Forecast</h2>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">air_passengers &lt;-<span class="st"> </span><span class="kw">format_ts</span>(AirPassengers)
+
+prophet_mod &lt;-<span class="st"> </span><span class="kw">prophet</span>(air_passengers, <span class="dt">seasonality.mode =</span> <span class="st">&quot;multiplicative&quot;</span>)</code></pre></div>
+<pre><code>## Initial log joint probability = -2.46502
+## Optimization terminated normally: 
+##   Convergence detected: relative gradient magnitude is below tolerance</code></pre>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">future &lt;-<span class="st"> </span><span class="kw">make_future_dataframe</span>(prophet_mod, 
+                                <span class="dt">periods =</span> <span class="dv">12</span>, 
+                                <span class="dt">freq =</span> <span class="st">&#39;month&#39;</span>)
+forecast &lt;-<span class="st"> </span><span class="kw">predict</span>(prophet_mod, future)</code></pre></div>
+</section>
+<section id="forecast-plot-1" class="slide level2">
+<h2>Forecast Plot</h2>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">dyplot.prophet</span>(prophet_mod, forecast)</code></pre></div>
+<div id="htmlwidget-3a63b42c418801646866" style="width:768px;height:576px;" class="dygraphs html-widget"></div>
+<script type="application/json" data-for="htmlwidget-3a63b42c418801646866">{"x":{"attrs":{"labels":["month","Actual","Predicted"],"legend":"auto","retainDateWindow":false,"axes":{"x":{"pixelsPerLabel":60}},"colors":["black","blue"],"series":{"Actual":{"axis":"y","drawPoints":true,"strokeWidth":0},"Predicted":{"axis":"y"}},"customBars":true,"showRangeSelector":true,"rangeSelectorHeight":40,"rangeSelectorPlotFillColor":" #A7B1C4","rangeSelectorPlotStrokeColor":"#808FAB","interactionModel":"Dygraph.Interaction.defaultModel"},"scale":"monthly","annotations":[],"shadings":[],"events":[],"format":"date","data":[["1949-01-01T00:00:00.000Z","1949-02-01T00:00:00.000Z","1949-03-01T00:00:00.000Z","1949-04-01T00:00:00.000Z","1949-05-01T00:00:00.000Z","1949-06-01T00:00:00.000Z","1949-07-01T00:00:00.000Z","1949-08-01T00:00:00.000Z","1949-09-01T00:00:00.000Z","1949-10-01T00:00:00.000Z","1949-11-01T00:00:00.000Z","1949-12-01T00:00:00.000Z","1950-01-01T00:00:00.000Z","1950-02-01T00:00:00.000Z","1950-03-01T00:00:00.000Z","1950-04-01T00:00:00.000Z","1950-05-01T00:00:00.000Z","1950-06-01T00:00:00.000Z","1950-07-01T00:00:00.000Z","1950-08-01T00:00:00.000Z","1950-09-01T00:00:00.000Z","1950-10-01T00:00:00.000Z","1950-11-01T00:00:00.000Z","1950-12-01T00:00:00.000Z","1951-01-01T00:00:00.000Z","1951-02-01T00:00:00.000Z","1951-03-01T00:00:00.000Z","1951-04-01T00:00:00.000Z","1951-05-01T00:00:00.000Z","1951-06-01T00:00:00.000Z","1951-07-01T00:00:00.000Z","1951-08-01T00:00:00.000Z","1951-09-01T00:00:00.000Z","1951-10-01T00:00:00.000Z","1951-11-01T00:00:00.000Z","1951-12-01T00:00:00.000Z","1952-01-01T00:00:00.000Z","1952-02-01T00:00:00.000Z","1952-03-01T00:00:00.000Z","1952-04-01T00:00:00.000Z","1952-05-01T00:00:00.000Z","1952-06-01T00:00:00.000Z","1952-07-01T00:00:00.000Z","1952-08-01T00:00:00.000Z","1952-09-01T00:00:00.000Z","1952-10-01T00:00:00.000Z","1952-11-01T00:00:00.000Z","1952-12-01T00:00:00.000Z","1953-01-01T00:00:00.000Z","1953-02-01T00:00:00.000Z","1953-03-01T00:00:00.000Z","1953-04-01T00:00:00.000Z","1953-05-01T00:00:00.000Z","1953-06-01T00:00:00.000Z","1953-07-01T00:00:00.000Z","1953-08-01T00:00:00.000Z","1953-09-01T00:00:00.000Z","1953-10-01T00:00:00.000Z","1953-11-01T00:00:00.000Z","1953-12-01T00:00:00.000Z","1954-01-01T00:00:00.000Z","1954-02-01T00:00:00.000Z","1954-03-01T00:00:00.000Z","1954-04-01T00:00:00.000Z","1954-05-01T00:00:00.000Z","1954-06-01T00:00:00.000Z","1954-07-01T00:00:00.000Z","1954-08-01T00:00:00.000Z","1954-09-01T00:00:00.000Z","1954-10-01T00:00:00.000Z","1954-11-01T00:00:00.000Z","1954-12-01T00:00:00.000Z","1955-01-01T00:00:00.000Z","1955-02-01T00:00:00.000Z","1955-03-01T00:00:00.000Z","1955-04-01T00:00:00.000Z","1955-05-01T00:00:00.000Z","1955-06-01T00:00:00.000Z","1955-07-01T00:00:00.000Z","1955-08-01T00:00:00.000Z","1955-09-01T00:00:00.000Z","1955-10-01T00:00:00.000Z","1955-11-01T00:00:00.000Z","1955-12-01T00:00:00.000Z","1956-01-01T00:00:00.000Z","1956-02-01T00:00:00.000Z","1956-03-01T00:00:00.000Z","1956-04-01T00:00:00.000Z","1956-05-01T00:00:00.000Z","1956-06-01T00:00:00.000Z","1956-07-01T00:00:00.000Z","1956-08-01T00:00:00.000Z","1956-09-01T00:00:00.000Z","1956-10-01T00:00:00.000Z","1956-11-01T00:00:00.000Z","1956-12-01T00:00:00.000Z","1957-01-01T00:00:00.000Z","1957-02-01T00:00:00.000Z","1957-03-01T00:00:00.000Z","1957-04-01T00:00:00.000Z","1957-05-01T00:00:00.000Z","1957-06-01T00:00:00.000Z","1957-07-01T00:00:00.000Z","1957-08-01T00:00:00.000Z","1957-09-01T00:00:00.000Z","1957-10-01T00:00:00.000Z","1957-11-01T00:00:00.000Z","1957-12-01T00:00:00.000Z","1958-01-01T00:00:00.000Z","1958-02-01T00:00:00.000Z","1958-03-01T00:00:00.000Z","1958-04-01T00:00:00.000Z","1958-05-01T00:00:00.000Z","1958-06-01T00:00:00.000Z","1958-07-01T00:00:00.000Z","1958-08-01T00:00:00.000Z","1958-09-01T00:00:00.000Z","1958-10-01T00:00:00.000Z","1958-11-01T00:00:00.000Z","1958-12-01T00:00:00.000Z","1959-01-01T00:00:00.000Z","1959-02-01T00:00:00.000Z","1959-03-01T00:00:00.000Z","1959-04-01T00:00:00.000Z","1959-05-01T00:00:00.000Z","1959-06-01T00:00:00.000Z","1959-07-01T00:00:00.000Z","1959-08-01T00:00:00.000Z","1959-09-01T00:00:00.000Z","1959-10-01T00:00:00.000Z","1959-11-01T00:00:00.000Z","1959-12-01T00:00:00.000Z","1960-01-01T00:00:00.000Z","1960-02-01T00:00:00.000Z","1960-03-01T00:00:00.000Z","1960-04-01T00:00:00.000Z","1960-05-01T00:00:00.000Z","1960-06-01T00:00:00.000Z","1960-07-01T00:00:00.000Z","1960-08-01T00:00:00.000Z","1960-09-01T00:00:00.000Z","1960-10-01T00:00:00.000Z","1960-11-01T00:00:00.000Z","1960-12-01T00:00:00.000Z","1961-01-01T00:00:00.000Z","1961-02-01T00:00:00.000Z","1961-03-01T00:00:00.000Z","1961-04-01T00:00:00.000Z","1961-05-01T00:00:00.000Z","1961-06-01T00:00:00.000Z","1961-07-01T00:00:00.000Z","1961-08-01T00:00:00.000Z","1961-09-01T00:00:00.000Z","1961-10-01T00:00:00.000Z","1961-11-01T00:00:00.000Z","1961-12-01T00:00:00.000Z"],[[112,112,112],[118,118,118],[132,132,132],[129,129,129],[121,121,121],[135,135,135],[148,148,148],[148,148,148],[136,136,136],[119,119,119],[104,104,104],[118,118,118],[115,115,115],[126,126,126],[141,141,141],[135,135,135],[125,125,125],[149,149,149],[170,170,170],[170,170,170],[158,158,158],[133,133,133],[114,114,114],[140,140,140],[145,145,145],[150,150,150],[178,178,178],[163,163,163],[172,172,172],[178,178,178],[199,199,199],[199,199,199],[184,184,184],[162,162,162],[146,146,146],[166,166,166],[171,171,171],[180,180,180],[193,193,193],[181,181,181],[183,183,183],[218,218,218],[230,230,230],[242,242,242],[209,209,209],[191,191,191],[172,172,172],[194,194,194],[196,196,196],[196,196,196],[236,236,236],[235,235,235],[229,229,229],[243,243,243],[264,264,264],[272,272,272],[237,237,237],[211,211,211],[180,180,180],[201,201,201],[204,204,204],[188,188,188],[235,235,235],[227,227,227],[234,234,234],[264,264,264],[302,302,302],[293,293,293],[259,259,259],[229,229,229],[203,203,203],[229,229,229],[242,242,242],[233,233,233],[267,267,267],[269,269,269],[270,270,270],[315,315,315],[364,364,364],[347,347,347],[312,312,312],[274,274,274],[237,237,237],[278,278,278],[284,284,284],[277,277,277],[317,317,317],[313,313,313],[318,318,318],[374,374,374],[413,413,413],[405,405,405],[355,355,355],[306,306,306],[271,271,271],[306,306,306],[315,315,315],[301,301,301],[356,356,356],[348,348,348],[355,355,355],[422,422,422],[465,465,465],[467,467,467],[404,404,404],[347,347,347],[305,305,305],[336,336,336],[340,340,340],[318,318,318],[362,362,362],[348,348,348],[363,363,363],[435,435,435],[491,491,491],[505,505,505],[404,404,404],[359,359,359],[310,310,310],[337,337,337],[360,360,360],[342,342,342],[406,406,406],[396,396,396],[420,420,420],[472,472,472],[548,548,548],[559,559,559],[463,463,463],[407,407,407],[362,362,362],[405,405,405],[417,417,417],[391,391,391],[419,419,419],[461,461,461],[472,472,472],[535,535,535],[622,622,622],[606,606,606],[508,508,508],[461,461,461],[390,390,390],[432,432,432],[null,null,null],[null,null,null],[null,null,null],[null,null,null],[null,null,null],[null,null,null],[null,null,null],[null,null,null],[null,null,null],[null,null,null],[null,null,null],[null,null,null]],[[91.0886671335658,104.24107642873,116.79399689118],[87.0251835859261,100.683621231463,114.210621428925],[102.405500329426,115.175827164804,128.286860326329],[103.143125934079,116.728899450704,130.45702014568],[105.937354461748,119.623440286894,132.374997902305],[125.282810168092,138.55549781016,151.874364435178],[144.776601457416,157.36380317641,170.999751132081],[144.759552765103,157.505582416175,170.222660379671],[121.7825453481,134.939838287679,147.821501141722],[106.457925945009,120.06107788363,133.205369112576],[91.6675149449544,104.876797530102,117.660793495726],[104.508629868633,117.689348345419,131.086134938283],[109.046363014437,122.41832095169,135.303871342194],[104.748586577508,117.908897896876,131.84856402685],[122.943361255482,136.30518288487,149.387656956786],[122.105332925291,134.716528505299,147.872961796887],[126.506375411485,139.493261627505,152.238782346673],[147.036762554892,160.453911926241,173.50395536465],[169.338914468076,183.0331115292,196.509782658305],[171.347621470158,184.201577542151,197.471639942857],[144.737519690971,157.466508951464,170.290963880116],[125.922305583515,139.06698037776,153.12992270641],[109.44854251186,122.009790538714,134.624838393562],[124.710882201954,137.355791026005,151.201692242242],[129.95222017962,142.822009160253,155.720564327325],[122.665312937561,137.609919651045,149.721567823303],[147.956547237225,161.103160825301,174.210465478409],[143.321283472354,155.723049164689,168.272152753888],[150.074765841394,163.432761790688,176.339502247754],[173.837529232979,187.194926511108,200.471353562004],[201.409034803953,215.033068638415,229.00583777138],[203.683597084755,216.876917050004,229.6626804542],[171.205225777019,184.416069278513,196.554051589331],[148.193234580741,161.214392298477,174.894267623915],[128.15493343507,141.686993925015,154.496854683326],[146.108706905271,159.575693273522,172.370196621919],[152.216611421332,165.411923410647,178.4403964087],[145.728359183066,159.032677008599,172.040918673126],[166.957504020626,180.096066605159,193.002940463153],[172.958942286364,186.212234477304,199.329935053294],[174.822008033928,188.034258643281,200.955846150641],[205.046909737992,218.235196805833,231.245154920722],[232.906631406904,245.658720071632,257.422218552494],[231.350861776111,244.058362608804,256.21532766678],[195.821862081648,209.15878825186,222.166426909216],[174.140277827632,187.185812346501,199.793319719985],[148.940724889648,162.567981853583,175.331494268819],[168.838286356023,181.540826432836,194.512113415947],[175.282318006218,188.600016987092,200.744213810728],[169.201348899315,181.329530899351,193.757692765311],[193.121073824476,206.591685536148,220.820884608925],[195.478865201936,208.462614554082,221.237744453935],[199.939538594724,212.749751369023,225.239254964316],[233.168374361117,245.393368940938,257.954657328921],[264.973833955009,277.606134129695,291.634237291468],[263.308061352099,276.750505664618,289.713701391985],[223.275718009556,236.178542428548,248.752444774159],[197.096352015039,209.363619848226,222.446269740055],[168.569943839976,182.204851700578,195.360721819477],[191.206009942227,203.744279760459,217.535936573599],[198.391103225005,211.176380376123,223.868982838784],[188.722865516927,202.688722947133,215.159049897666],[219.912394905137,233.589863759511,247.443159171973],[216.420768156533,230.094821665975,242.647045391621],[224.385869860918,237.497733261584,250.20575108729],[259.736472145704,273.087335629828,286.261374165826],[298.811731161907,311.411290628424,324.637765746868],[299.529152481037,312.402043458303,325.726028611603],[253.906487190802,266.231718314505,279.78203221712],[221.895807472385,234.984705658525,248.282066736518],[192.710318476443,206.040580587653,218.864582305288],[219.426852469053,231.826163571706,243.991607636803],[228.051329185104,240.916368252978,253.754172779827],[218.864158760113,231.997329014391,245.605975701232],[259.305857773977,271.47364966995,285.11192096749],[249.522083420792,262.270873537327,275.866455732698],[260.965889335911,275.120249301882,287.891484442921],[301.98746978375,314.964828326472,330.07319378885],[347.967316696556,361.634432606532,375.863484556434],[351.259967715624,364.563030518639,376.709788343451],[297.425739555549,309.854457029493,322.335454004272],[257.769910779594,270.753119566256,284.245221822479],[223.892807048964,237.852934258978,250.589968808192],[254.310635879322,267.77160067496,280.141641710957],[264.3558772927,277.4482662023,290.725110311608],[253.46300207437,266.638669404863,279.921006966196],[289.196051336335,301.840618115631,314.848070696844],[298.906625613333,311.968563891999,325.741346628322],[301.896868389635,314.903758155035,327.854927175884],[352.432853020419,365.344074167297,378.534440706688],[398.674891246328,411.106635767154,425.336017485966],[394.397499440022,408.281030355892,421.200585052346],[336.145705950188,349.436565705983,362.545384456932],[298.784545885688,312.335399082174,325.023264305408],[257.995339562124,270.914393256858,283.877164074416],[289.477218416426,302.167780723066,315.594009851075],[300.301777254565,313.534380415738,326.77085597473],[287.706583376833,300.76723459105,314.054189987255],[327.88987875708,341.982151295492,354.993468191297],[331.302159032587,344.326394660037,357.798587825161],[337.03989829542,350.678548770716,364.061389524619],[390.981672168808,403.411580013982,416.637753256389],[441.991123219175,455.214033198997,469.537499294392],[439.454499298655,452.645247385803,465.907461885444],[372.410924370979,385.310923956177,398.375002644683],[328.336293881431,340.742230323144,353.105135746039],[283.431222461998,295.815473249459,309.54202177485],[316.834437791435,330.01460818874,343.309872116788],[328.021607781935,341.242022599057,354.164192551461],[313.601068852884,326.762689860916,339.55694919801],[362.556250956952,375.797955199579,389.28026891373],[357.223418154037,369.337080837945,382.221050332283],[367.237819456625,380.397287960846,394.059013141528],[422.025007545018,435.19412228163,448.279159557606],[480.85497789621,493.887251748043,507.490928450783],[480.91002128122,494.36616196693,506.526348558006],[406.456954838475,420.393014125536,433.912450175375],[357.443627057096,369.425831951569,382.820318770344],[309.745345017874,322.48673178112,334.795737574993],[348.34797660313,361.322889898414,374.053786355514],[360.716057159166,373.897617612616,387.433650506208],[345.580177557492,358.56043790975,370.845217676298],[405.583450927348,418.030463967864,431.07514038544],[390.156780146839,402.249257357695,416.32056659074],[408.418099140287,420.361573269021,434.088557098059],[465.890758917623,479.399257395237,491.71554603525],[534.484906384855,548.435957192081,562.101131149356],[538.210026200758,550.84490693609,563.397585631826],[454.301995704417,466.494931033143,479.769420963577],[392.657960898291,406.232963251303,420.31042302157],[343.264181141616,355.633527328249,369.569854889893],[386.353584417671,399.050271056766,411.567281009386],[399.38043864194,412.092025403826,425.556930530353],[381.044934267007,394.740757408727,407.927939936752],[431.665490001627,445.511816950382,459.116292294839],[446.216428270807,459.007864612969,472.060971845536],[447.738389215812,461.937554780856,475.16351762171],[521.361297160822,534.299055581757,548.621380626362],[586.084225983631,599.486276295839,612.680590528809],[580.680730162986,593.618484182882,607.745938208372],[494.268922093804,507.087030377599,519.852691637454],[439.068005986399,452.41965619834,466.070544339999],[378.301582864341,391.692571633704,404.808500835419],[421.88050181315,436.107001756084,449.175865564701],[437.95021174955,451.698690672634,464.02874620125],[420.019324022509,432.998847101964,446.838728794917],[478.750930315794,492.023592924578,504.294382339863],[481.958023973429,495.055668878075,508.068364786035],[490.912259391062,503.857814940655,517.419693439761],[566.730181069398,579.556130002163,592.386810438979],[640.065028624433,653.903235237898,666.122740356215],[636.588533102319,650.138020771914,663.53665193885],[539.618599893413,553.362051415279,566.471260276574],[476.047448223774,489.30168344183,502.032159787489],[410.77029801133,424.740243906499,437.972312953237],[459.709328065261,473.794096015606,486.65377356342]]],"plugins":{"Unzoom":"{}"}},"evals":["attrs.interactionModel","plugins.Unzoom"],"jsHooks":[]}</script>
+</section>
+<section id="other-stuff" class="slide level2">
+<h2>Other stuff??</h2>
+<ul>
+<li>Tune hyperparameters for your data</li>
+<li>Python? (i.e. <code>statsmodels</code>)</li>
+<li>Feature engineering</li>
+<li>Tree-based algorithm (i.e. LightGBM)</li>
+<li>Deep Learning (i.e. LSTM)</li>
+</ul>
 </section>
     </div>
   </div>

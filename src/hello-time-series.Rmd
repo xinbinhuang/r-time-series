@@ -85,7 +85,7 @@ theme_set(theme_bw())
 <p>Stationary: Constant mean and variance</p>
 </aside>
 
-## Stionary or NOT
+## Stationary or NOT
 
 #### Non-staionary
 <img src="./img/non-stationary.png" height="80%"" width="70%" alt="https://www.analyticsvidhya.com/blog/2018/09/non-stationary-time-series-python/">
